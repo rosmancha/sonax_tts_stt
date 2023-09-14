@@ -13,13 +13,20 @@ Pasta padrão: /var/www/bin/sonax_tts_stt/
 Client TTS: sonax_tts_gcp
 Client STT: sonax_stt_gcp
 
+PRÉ-REQUISITOS:
+1 - É necessário chave de acesso SSH cadastrada no servidor TTS/STT da SONA a partir do servidor ou estação de origem
+    1.1 - A maioria dos servidores SONAX tem chaves de acesso SSH cadastrada no servidor de TTS/STT. 
+    Caso você precise cadastrar sua chave de acesso SSH contate o administrador de sistemas.
+2 - O formato do audio para envio tem que ser WAV, no perfil PCM (8 KHZ de amostragem e monocanal).
+
+
 EXEMPLOS DE USO:
 
 PHP-----------------------------------------------------------------------------------------------
 <?php
 #TTS
 $vconteudo = shell_exec('/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?"');
-#O client está programado para retornar o audio sintetizado em formato WAV
+#O CLIENT ESTÁ PROGRAMADO PARA O DEVOLVER O AUDIO NO FORMATO WAV
 file_put_contents("teste_tts_sonax.wav", $vconteudo); //GRAVA O CONTEUDO DO AUDIO SINTETIZADO
 ?>
 
@@ -52,7 +59,7 @@ exec(`/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?"`, (error, stdout, st
       console.error(err)
       return
     }
-   })//ARQUIVO DE AUDIO SINTETIZADO GRAVADO
+   })//GRAVA O ARQUIVO DE AUDIO SINTETIZADO
 });
 
 #STT
