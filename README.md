@@ -13,6 +13,16 @@ Pasta padrão: /var/www/bin/sonax_tts_stt/
 Client TTS: sonax_tts_gcp
 Client STT: sonax_stt_gcp
 
+
+SINTAXE:
+TTS - /pasta/local/sonax_tts_gcp "<TEXTO_A_SINTETIZAR>" [CODIGO_IDIOMA*] [GÊNERO**] [NOME_VOZ***]
+STT - /pasta/local/sonax_stt_gcp arquivo_de_audio.wav
+
+* Lista de código de idiomas no padrão da RFC BCP-47. Se nada for informado, pt-BR será usado (https://cloud.google.com/text-to-speech/docs/reference/rest/v1/voices/list).
+** Pode ser 'F' para Feminino ou 'M' para Masculino. Se nada for informado, 'F' será usado.
+*** Código de nome de possíveis vozes. Se nada for informado, pt-BR-Neural2-A será usado para feminino e pt-BR-Neural2-B será usado para masculino (https://cloud.google.com/text-to-speech/docs/reference/rest/v1/voices/list).
+
+
 PRÉ-REQUISITOS:
 1 - É necessário chave de acesso SSH cadastrada no servidor TTS/STT da SONA a partir do servidor ou estação de origem
     1.1 - A maioria dos servidores SONAX tem chaves de acesso SSH cadastrada no servidor de TTS/STT. 
@@ -25,8 +35,8 @@ EXEMPLOS DE USO:
 PHP-----------------------------------------------------------------------------------------------
 <?php
 #TTS
-$vconteudo = shell_exec('/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?"');
-#O CLIENT ESTÁ PROGRAMADO PARA O DEVOLVER O AUDIO NO FORMATO WAV
+$vconteudo = shell_exec('/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?" pt-BR F pt-BR-Neural2-A');
+#O CLIENT ESTÁ PROGRAMADO PARA DEVOLVER O AUDIO NO FORMATO WAV
 file_put_contents("teste_tts_sonax.wav", $vconteudo); //GRAVA O CONTEUDO DO AUDIO SINTETIZADO
 ?>
 
@@ -45,7 +55,7 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const path = require("path");
 
-exec(`/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?"`, (error, stdout, stderr) => {
+exec(`/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?" pt-BR F pt-BR-Neural2-A`, (error, stdout, stderr) => {
     if (error) {
         console.log(`error: ${error.message}`);
         return
@@ -83,7 +93,7 @@ exec(`/pasta/local/sonax_stt_gcp arquivo_de_audio.wav`, (error, stdout, stderr) 
 
 SHELL--------------------------------------------------------------------------------------
 #TTS
-/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?" > teste_tts_sonax.wav
+/pasta/local/sonax_tts_gcp "olá Ricardo, como vai ?" pt-BR F pt-BR-Neural2-A > teste_tts_sonax.wav
 
 #STT
 /pasta/local/sonax_stt_gcp arquivo_de_audio.wav
